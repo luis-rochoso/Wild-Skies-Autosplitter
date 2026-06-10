@@ -10,7 +10,7 @@ state("Wild Skies")
 
 init
 {
-	vars.split = 0; //!< Tracks in which split the run is at
+	vars.split = 1; //!< Tracks in which split the run is at
 	vars.tutoStart = false; //!< Tracks if the riding tutorial with Toothless has begun
 	print("INIT");
 }
@@ -31,7 +31,7 @@ update
 // The "loadingDragon" variable goes to zero when loading.
 isLoading
 {
-	if (current.loadingDragon == 0) {
+	if (vars.tutoStart && current.loadingDragon == 0) {
 		return true;
 	}
 	return false;
@@ -39,11 +39,23 @@ isLoading
 
 split
 {
-	if (vars.split == 0) {
-		if (old.staticDragon == 5 && current.staticDragon == 1) {
+	switch (vars.split)
+	{
+		case 1:
+			if (old.staticDragon == 5 && current.staticDragon == 1) {
 			vars.split++;
 			return true;
-		}
+			}
+
+		// [TODO] Implement remaining timer split triggers
+		case 2:
+			return false;
+		case 3:
+			return false;
+		case 4:
+			return false;
+
+		default:
+			return false;
 	}
-	//print("Current coins: " + current.coins);
 }
